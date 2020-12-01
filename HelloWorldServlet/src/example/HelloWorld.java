@@ -15,40 +15,39 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/SimplExample")//servlet url
 public class HelloWorld extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public HelloWorld() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	protected void sendResponse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		response.setContentType("text/html");
-		PrintWriter printWriter = response.getWriter();
 		
-		printWriter.println("<h1 style=\"color:red\";>Hello World!</h1>");
-		printWriter.println("I'm from doGet()!");
+		try(PrintWriter printWriter = response.getWriter()){
+			
+			printWriter.println(message);		
+		
+		}			
+	}
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		sendResponse("I'm from doGet()!", request, response);
 		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		response.setContentType("text/html");
-		response.getWriter().println("I'm from doPost()!");
+		sendResponse("I'm from doPost()!", request, response);
+		
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.setContentType("text/html");
-		response.getWriter().println("I'm from doPut()!");
+		sendResponse("I'm from doPut()!", request, response);
 		
 	}
 	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		
-		response.setContentType("text/html");
-		response.getWriter().println("I'm from doDelete()!");
-		//System.out.println("I'm from doDelete()");	
+		sendResponse("I'm from doDelete()!", request, response);
+		
 	}
-
 }
