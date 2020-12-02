@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HelloWorld extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	protected void sendResponse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void sendResponse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
 		try(PrintWriter printWriter = response.getWriter()){
 			printWriter.println(message);		
