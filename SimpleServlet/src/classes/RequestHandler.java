@@ -1,4 +1,4 @@
-package example;
+package classes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class HelloWorld
  */
-@WebServlet("/SimplExample")//servlet url
-public class HelloWorld extends HttpServlet {
+@WebServlet("/Example")//servlet url
+public class RequestHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private void sendResponse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
 		try(PrintWriter printWriter = response.getWriter()){
-			printWriter.println(message);		
+			printWriter.println(message);
 		}			
 	}
        
