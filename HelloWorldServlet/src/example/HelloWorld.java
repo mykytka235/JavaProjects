@@ -21,33 +21,23 @@ public class HelloWorld extends HttpServlet {
 		response.setContentType("text/html");
 		
 		try(PrintWriter printWriter = response.getWriter()){
-			
 			printWriter.println(message);		
-		
 		}			
 	}
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		sendResponse("I'm from doGet()!", request, response);
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		sendResponse("I'm from doPost()!", request, response);
-		
 	}
 
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		sendResponse("I'm from doPut()!", request, response);
-		
 	}
 	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		
 		sendResponse("I'm from doDelete()!", request, response);
-		
 	}
 }
