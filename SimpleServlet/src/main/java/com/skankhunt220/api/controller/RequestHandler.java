@@ -18,26 +18,26 @@ import main.java.com.skankhunt220.service.UserService;
 public class RequestHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userService;
+	private PrintWriter printWriter;
 
 	private void sendResponse(String message, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
 		response.setContentType("text/html");
-		try (PrintWriter printWriter = response.getWriter()) {
-			User user = new User();
+		printWriter = response.getWriter();
+		User user = new User();
 
-			user.setId(request.getParameter("id"));
-			user.setFirstName(request.getParameter("firstName"));
-			user.setMiddleName(request.getParameter("middleName"));
-			user.setLastName(request.getParameter("lastName"));
+		user.setId(request.getParameter("id"));
+		user.setFirstName(request.getParameter("firstName"));
+		user.setMiddleName(request.getParameter("middleName"));
+		user.setLastName(request.getParameter("lastName"));
 
-			printWriter.println("<h1>First name:" + user.getFirstName() + "</h1>" + "<h1>Midle name:"
-					+ user.getMiddleName() + "</h1>" + "<h1>Last name:" + user.getLastName() + "</h1>");
+		printWriter.println("<h1>First name:" + user.getFirstName() + "</h1>" + "<h1>Midle name:" + user.getMiddleName()
+				+ "</h1>" + "<h1>Last name:" + user.getLastName() + "</h1>");
 
-			userService = new UserService(user);
+		userService = new UserService(user);
 
-			printWriter.println("<h2>" + message + "</h2>");
-		}
+		printWriter.println("<h2>" + message + "</h2>");
 
 	}
 
@@ -46,7 +46,8 @@ public class RequestHandler extends HttpServlet {
 		// Read
 		sendResponse("I from method doGet()", request, response);
 		Document doc = userService.Read();
-		System.out.println(doc.toJson());
+		printWriter.println(doc.toJson().toString());
+		printWriter.close();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -54,6 +55,7 @@ public class RequestHandler extends HttpServlet {
 		// Create
 		sendResponse("I from method doPost()", request, response);
 		userService.Create();
+		printWriter.close();
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -61,6 +63,7 @@ public class RequestHandler extends HttpServlet {
 		// Update
 		sendResponse("I from method doPut()", request, response);
 		userService.Update();
+		printWriter.close();
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
@@ -68,5 +71,6 @@ public class RequestHandler extends HttpServlet {
 		// Delete
 		sendResponse("I from method doDelete()", request, response);
 		userService.Delete();
+		printWriter.close();
 	}
 }
