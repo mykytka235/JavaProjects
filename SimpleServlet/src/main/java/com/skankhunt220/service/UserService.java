@@ -7,26 +7,21 @@ import main.java.com.skankhunt220.repository.UserRepository;
 
 public class UserService {
 
-	private UserRepository userRepository;
-	
-	public UserService() {
-		userRepository = new UserRepository();
-	}
+	private static final UserRepository userRepository = new UserRepository();
 
 	public void createUser(User user) {
-		userRepository.Create(user);
+		userRepository.create(user);
 	}
 
-	public Document readUser(String userId) {
-		Document myDoc = userRepository.Read(userId);
-		return myDoc;
+	public Document readUser(String userId) {		
+		return userRepository.read(userId);
 	}
 
 	public void editUser(User user) {
-		userRepository.Update(user);
+		userRepository.update(user);
 	}
 
 	public void deleteUser(String userId) {
-		userRepository.Delete(userId);
+		userRepository.delete(userId);
 	}
 }

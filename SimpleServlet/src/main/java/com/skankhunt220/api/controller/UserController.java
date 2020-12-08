@@ -15,22 +15,19 @@ import main.java.com.skankhunt220.service.UserService;
 @WebServlet("/User") // servlet url
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UserService userService;
+	private static final UserService userService = new UserService();;
 	private User user;
 
 	private void sendResponse(String message, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-
 		response.setContentType("text/html");
 		try (PrintWriter writer = response.getWriter()) {
-			user = new User();
-			getUserFields(user, request);
-			userService = new UserService();			
 			writer.println(message);
 		}
 	}
 
-	private void getUserFields(User user, HttpServletRequest request) {
+	private void getUserFields(HttpServletRequest request) {
+		user = new User();
 		user.setId(request.getParameter("id"));
 		user.setFirstName(request.getParameter("firstName"));
 		user.setMiddleName(request.getParameter("middleName"));
@@ -40,33 +37,32 @@ public class UserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Read
-		response.setContentType("text/html");
-		try(PrintWriter writer = response.getWriter()){
-			user = new User();
-			user.setId(request.getParameter("id"));
-			userService = new UserService();
-			writer.println(userService.readUser(user.getId()).toJson());
-		}
+		getUserFields(request);
+		sendResponse(userService.readUser(user.getId()).toJson(), request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Create
-		sendResponse("I from method doPost()", request, response);
+		getUserFields(request);
 		userService.createUser(user);
+		sendResponse("I from method doPost()", request, response);
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Update
-		sendResponse("I from method doPut()", request, response);
+		getUserFields(request);
 		userService.editUser(user);
+		sendResponse("I from method doPut()", request, response);
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Delete
-		sendResponse("I from method doDelete()", request, response);
+		getUserFields(request);
 		userService.deleteUser(user.getId());
+		sendResponse("I from method doDelete()", request, response);
 	}
 }
