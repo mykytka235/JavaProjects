@@ -1,0 +1,30 @@
+apply plugin: 'war'
+
+repositories{
+	mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'Java Resources/src'
+        } 
+        resources {
+            srcDir 'Java Resources/src'
+        }
+    }
+}
+
+dependencies {
+	providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+
+    compile 'org.mongodb:mongodb-driver-sync:4.1.1'
+    compile 'org.mongodb:mongodb-driver-legacy:4.1.1'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.0.1'	
+   	
+   	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'	
+	
+	implementation 'org.json:json:20171018'
+}

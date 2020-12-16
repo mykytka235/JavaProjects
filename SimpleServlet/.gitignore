@@ -1,0 +1,13 @@
+#folders
+bin/
+/build/
+.settings/
+.gradle/
+WebContent/
+
+#files
+.project
+.classpath
+gradlew
+gradlew.bat
+.gitattributes
