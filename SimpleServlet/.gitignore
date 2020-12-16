@@ -1,8 +1,13 @@
 #folders
+bin/
 /build/
 .settings/
-WebContent/WEB-INF/lib/
+.gradle/
+WebContent/
 
 #files
 .project
 .classpath
+gradlew
+gradlew.bat
+.gitattributes

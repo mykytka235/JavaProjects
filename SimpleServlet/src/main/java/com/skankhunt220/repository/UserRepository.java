@@ -1,4 +1,4 @@
-package main.java.com.skankhunt220.repository;
+package com.skankhunt220.repository;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -8,8 +8,7 @@ import org.bson.types.ObjectId;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-
-import main.java.com.skankhunt220.entities.User;
+import com.skankhunt220.entity.User;
 
 public class UserRepository {
 	private MongoDatabase database;
@@ -19,7 +18,6 @@ public class UserRepository {
 		try (MongoClient mc = new MongoClient("localhost", 27017)) {
 			database = mc.getDatabase("UserDB");
 			collection = database.getCollection("users");
-
 			collection.insertOne(new Document("_id", new ObjectId()).append("firstName", user.getFirstName())
 					.append("middleName", user.getMiddleName()).append("lastName", user.getLastName()));
 		}
@@ -28,9 +26,8 @@ public class UserRepository {
 	public Document read(String userId) {
 		try (MongoClient mc = new MongoClient("localhost", 27017)) {
 			database = mc.getDatabase("UserDB");
-			collection = database.getCollection("users");
-			Document myDoc = collection.find(eq("_id", new ObjectId(userId))).first();
-			return myDoc;
+			collection = database.getCollection("users");			
+			return collection.find(eq("_id", new ObjectId(userId))).first();
 		}
 	}
 

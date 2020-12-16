@@ -1,9 +1,9 @@
-package main.java.com.skankhunt220.service;
+package com.skankhunt220.service;
 
 import org.bson.Document;
 
-import main.java.com.skankhunt220.entities.User;
-import main.java.com.skankhunt220.repository.UserRepository;
+import com.skankhunt220.entity.User;
+import com.skankhunt220.repository.UserRepository;
 
 public class UserService {
 

@@ -1,7 +1,8 @@
-package main.java.com.skankhunt220.api.controller;
+package com.skankhunt220.api.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,60 +10,59 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.com.skankhunt220.entities.User;
-import main.java.com.skankhunt220.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.skankhunt220.entity.User;
+import com.skankhunt220.service.UserService;
 
-@WebServlet("/User") // servlet url
+@WebServlet("/users") // servlet url
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final UserService userService = new UserService();;
-	private User user;
+	private static final UserService userService = new UserService();
+	private static final ObjectMapper mapper = new ObjectMapper();
 
-	private void sendResponse(String message, HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		response.setContentType("text/html");
-		try (PrintWriter writer = response.getWriter()) {
-			writer.println(message);
+	private void sendResponse(String message, HttpServletResponse response) throws IOException {
+		response.setContentType("application/json");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(message);
 		}
 	}
-
-	private void getUserFields(HttpServletRequest request) {
-		user = new User();
-		user.setId(request.getParameter("id"));
-		user.setFirstName(request.getParameter("firstName"));
-		user.setMiddleName(request.getParameter("middleName"));
-		user.setLastName(request.getParameter("lastName"));
+	private User getUserInfo(HttpServletRequest request) throws IOException {
+		try {
+			String bodyInfo = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+			return mapper.readValue(bodyInfo, User.class);
+		} catch (IOException ex) {
+			// ...
+		}
+		return new User();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Read
-		getUserFields(request);
-		sendResponse(userService.readUser(user.getId()).toJson(), request, response);
-
+		sendResponse(userService.readUser(getUserInfo(request).getId()).toJson(), response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Create
-		getUserFields(request);
+		User user = getUserInfo(request);
 		userService.createUser(user);
-		sendResponse("I from method doPost()", request, response);
+		sendResponse(new Gson().toJson(user), response);
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Update
-		getUserFields(request);
+		User user = getUserInfo(request);
 		userService.editUser(user);
-		sendResponse("I from method doPut()", request, response);
+		sendResponse(new Gson().toJson(user), response);
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Delete
-		getUserFields(request);
-		userService.deleteUser(user.getId());
-		sendResponse("I from method doDelete()", request, response);
+		userService.deleteUser(getUserInfo(request).getId());
+		sendResponse("Object was deleted", response);
 	}
 }
